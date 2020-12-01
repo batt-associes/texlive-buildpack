@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "texlive-buildpack"
+exit 0
