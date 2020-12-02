@@ -7,7 +7,7 @@ BUILD_DIR=${1:-}
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
 
-BP_DIR=$(dirname "$(readlink -f "$0")")
+LP_DIR=$(cd "$(dirname "$0")"; cd ..; pwd)
 BIN_DIR=$(cd "$(dirname "$0")"; pwd) # Absolute path
 TEXLIVE_DIR="$BUILD_DIR/.texlive"
 mkdir -p "$TEXLIVE_DIR"
@@ -20,15 +20,29 @@ cd "$TEXLIVE_DIR"
 DOWNLOAD_URL="http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz"
 curl -L $DOWNLOAD_URL | tar -xz
 
+echo "-----> Add custom locations to profile file"
+cp "$BIN_DIR/../config/custom.profile" .
+{
+  echo "TEXDIR $TEXLIVE_DIR/usr/local/texlive/2020";
+  echo "TEXMFLOCAL $TEXLIVE_DIR/usr/local/texlive/texmf-local";
+  echo "TEXMFSYSVAR $TEXLIVE_DIR/usr/local/texlive/2020/texmf-var";
+  echo "TEXMFSYSCONFIG $TEXLIVE_DIR/usr/local/texlive/2020/texmf-config";
+  echo "TEXMFVAR ~/.texlive2020/texmf-var";
+  echo "TEXMFCONFIG ~/.texlive2020/texmf-config";
+  echo "TEXMFHOME ~/texmf";
+} >> custom.profile
+
 echo "-----> Install TeX Live using custom profile file"
 cd install-tl-*
 
-perl install-tl --profile "$BIN_DIR/../config/custom.profile"
+perl install-tl --profile ../custom.profile
 
 echo "-----> Update PATH"
 PROFILE_PATH="$BUILD_DIR/.profile.d/texlive.sh"
 mkdir -p "$(dirname "$PROFILE_PATH")"
-echo 'export PATH="/app/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"' >> "$PROFILE_PATH"
+echo 'export PATH="$HOME/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"' >> "$PROFILE_PATH"
 
 # For multi-buildpack support, add an export file
-echo 'export PATH="$BUILD_DIR/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"' >> "$BP_DIR/export"
+echo 'export PATH="$BUILD_DIR/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"' >> "$LP_DIR/export"
+export PATH="$BUILD_DIR/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
+}

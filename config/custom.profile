@@ -1,12 +1,12 @@
 selected_scheme scheme-custom
-# Custom locations as default ones are forbidden (not root)
-TEXDIR /app/.texlive/usr/local/texlive/2020
-TEXMFLOCAL /app/.texlive/usr/local/texlive/texmf-local
-TEXMFSYSVAR /app/.texlive/usr/local/texlive/2020/texmf-var
-TEXMFSYSCONFIG /app/.texlive/usr/local/texlive/2020/texmf-config
-TEXMFVAR ~/.texlive2020/texmf-var
-TEXMFCONFIG ~/.texlive2020/texmf-config
-TEXMFHOME ~/texmf
+# Locations that will be customised before installing because these ones are forbidden (not root)
+# TEXDIR /usr/local/texlive/2020
+# TEXMFLOCAL /usr/local/texlive/texmf-local
+# TEXMFSYSVAR /usr/local/texlive/2020/texmf-var
+# TEXMFSYSCONFIG /usr/local/texlive/2020/texmf-config
+# TEXMFVAR ~/.texlive2020/texmf-var
+# TEXMFCONFIG ~/.texlive2020/texmf-config
+# TEXMFHOME ~/texmf
 # Platform
 binary_x86_64-linux 1
 # Collections
