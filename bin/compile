@@ -32,6 +32,9 @@ cp "$BIN_DIR/../config/custom.profile" .
   echo "TEXMFHOME ~/texmf";
 } >> custom.profile
 
+echo "?     [DEBUG]"
+cat custom.profile
+
 echo "-----> Install TeX Live using custom profile file"
 cd install-tl-*
 
