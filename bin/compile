@@ -9,10 +9,10 @@ ENV_DIR=${3:-}
 
 LP_DIR=$(cd "$(dirname "$0")"; cd ..; pwd)
 BIN_DIR=$(cd "$(dirname "$0")"; pwd) # Absolute path
-TEXLIVE_DIR="$BUILD_DIR/.texlive"
+export TEXLIVE_DIR="$BUILD_DIR/.texlive"
 mkdir -p "$TEXLIVE_DIR"
 
-echo "-----> Install relevant LaTeX processor and dependencies for PyLaTeX"
+echo "-----> Install TeX Live with custom set of collections"
 
 echo "-----> Download TeX Live network-based installer"
 cd "$TEXLIVE_DIR"
@@ -43,6 +43,5 @@ mkdir -p "$(dirname "$PROFILE_PATH")"
 echo 'export PATH="$HOME/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"' >> "$PROFILE_PATH"
 
 # For multi-buildpack support, add an export file
-echo 'export PATH="$BUILD_DIR/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"' >> "$LP_DIR/export"
 export PATH="$BUILD_DIR/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
-}
+export | grep " PATH=" >> "$LP_DIR/export"
