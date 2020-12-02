@@ -7,9 +7,10 @@ BUILD_DIR=${1:-}
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
 
+BP_DIR=$(dirname "$(readlink -f "$0")")
 BIN_DIR=$(cd "$(dirname "$0")"; pwd) # Absolute path
 TEXLIVE_DIR="$BUILD_DIR/.texlive"
-mkdir -p $TEXLIVE_DIR
+mkdir -p "$TEXLIVE_DIR"
 
 echo "-----> Install relevant LaTeX processor and dependencies for PyLaTeX"
 
@@ -25,4 +26,9 @@ cd install-tl-*
 perl install-tl --profile "$BIN_DIR/../config/custom.profile"
 
 echo "-----> Update PATH"
-export PATH="/app/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
+PROFILE_PATH="$BUILD_DIR/.profile.d/texlive.sh"
+mkdir -p "$(dirname "$PROFILE_PATH")"
+echo 'export PATH="/app/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"' >> "$PROFILE_PATH"
+
+# For multi-buildpack support, add an export file
+echo 'export PATH="$BUILD_DIR/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"' >> "$BP_DIR/export"
