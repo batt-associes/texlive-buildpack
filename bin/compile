@@ -1,14 +1,28 @@
 #!/bin/bash
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
+set -e
+
 BUILD_DIR=${1:-}
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
 
+BIN_DIR=$(cd "$(dirname "$0")"; pwd) # Absolute path
+TEXLIVE_DIR="$BUILD_DIR/.texlive"
+mkdir -p $TEXLIVE_DIR
+
 echo "-----> Install relevant LaTeX processor and dependencies for PyLaTeX"
 
-echo "-----> Install texlive-latex-extra"
-apt-get install --yes texlive-latex-extra
+echo "-----> Download TeX Live network-based installer"
+cd "$TEXLIVE_DIR"
 
-echo "-----> Install latexmk"
-apt-get install --yes latexmk
+DOWNLOAD_URL="http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz"
+curl -L $DOWNLOAD_URL | tar -xz
+
+echo "-----> Install TeX Live using custom profile file"
+cd install-tl-*
+
+perl install-tl --profile "$BIN_DIR/../config/custom.profile"
+
+echo "-----> Update PATH"
+export PATH="/app/.texlive/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
