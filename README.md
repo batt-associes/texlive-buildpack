@@ -16,16 +16,6 @@ This repository was first intended to install the smallest TeX Live distribution
 PyLaTeX to run for the desired purposes. The target platform was Scalingo where the whole app
 image has to be [under 1 GiB][size-limit].
 
-## Improvements
-
-Considering buildpacks can be triggered, a profile file with the desired set of TeX Live
-collections could as well trigger this buildpack.
-
-Custom locations for installation are used (Permission denied for `/usr/local`). More tests
-have to be made to remove hardcoded `/app` (issue with use of `~`).
-
-The installation should be cached and not be reinstalled at every deployment.
-
 ## Resources
 
 - [TeX Live quick install][quickinstall]
