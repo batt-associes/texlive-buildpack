@@ -20,7 +20,9 @@ TEXLIVE_BIN_CACHE_DIR="$CACHE_DIR/texlive"
 if [ -d "$TEXLIVE_BIN_CACHE_DIR" ]; then
   echo "-----> Use previous cached installation"
   mkdir -p "$TEXLIVE_BIN_DIR"
-  cp "$TEXLIVE_BIN_CACHE_DIR/*" "$TEXLIVE_BIN_DIR"
+  chmod +x "$TEXLIVE_BIN_CACHE_DIR"/*
+
+  cp -r "$TEXLIVE_BIN_CACHE_DIR"/* "$TEXLIVE_BIN_DIR/"
 
 else
   echo "-----> Download TeX Live network-based installer"
